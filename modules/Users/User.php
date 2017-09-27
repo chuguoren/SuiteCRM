@@ -1,11 +1,11 @@
 <?php
-/**
- *
+if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2017 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,86 +34,81 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
-
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('include/SugarObjects/templates/person/Person.php');
 
 // User is used to store customer information.
-class User extends Person
-{
+class User extends Person {
 	// Stored fields
-    public $name = '';
-    public $full_name;
-    public $id;
-    public $user_name;
-    public $user_hash;
-    public $salutation;
-    public $first_name;
-    public $last_name;
-    public $date_entered;
-    public $date_modified;
-    public $modified_user_id;
-    public $created_by;
-    public $created_by_name;
-    public $modified_by_name;
-    public $description;
-    public $phone_home;
-    public $phone_mobile;
-    public $phone_work;
-    public $phone_other;
-    public $phone_fax;
-    public $email1;
-    public $email2;
-    public $address_street;
-    public $address_city;
-    public $address_state;
-    public $address_postalcode;
-    public $address_country;
-    public $status;
-    public $title;
-    public $photo;
-    public $portal_only;
-    public $department;
-    public $authenticated = false;
-    public $error_string;
-    public $is_admin;
-    public $employee_status;
-    public $messenger_id;
-    public $messenger_type;
-    public $is_group;
-    public $accept_status; // to support Meetings
+	var $name = '';
+	var $full_name;
+	var $id;
+	var $user_name;
+	var $user_hash;
+	var $salutation;
+	var $first_name;
+	var $last_name;
+	var $date_entered;
+	var $date_modified;
+	var $modified_user_id;
+	var $created_by;
+	var $created_by_name;
+	var $modified_by_name;
+	var $description;
+	var $phone_home;
+	var $phone_mobile;
+	var $phone_work;
+	var $phone_other;
+	var $phone_fax;
+	var $email1;
+	var $email2;
+	var $address_street;
+	var $address_city;
+	var $address_state;
+	var $address_postalcode;
+	var $address_country;
+	var $status;
+	var $title;
+    var $photo;
+	var $portal_only;
+	var $department;
+	var $authenticated = false;
+	var $error_string;
+	var $is_admin;
+	var $employee_status;
+	var $messenger_id;
+	var $messenger_type;
+	var $is_group;
+	var $accept_status; // to support Meetings
 	//adding a property called team_id so we can populate it for use in the team widget
-    public $team_id;
+	var $team_id;
 
-    public $receive_notifications;
+	var $receive_notifications;
 
-    public $reports_to_name;
-    public $reports_to_id;
-    public $team_exists = false;
-    public $table_name = "users";
-    public $module_dir = 'Users';
-    public $object_name = "User";
-    public $user_preferences;
+	var $reports_to_name;
+	var $reports_to_id;
+	var $team_exists = false;
+	var $table_name = "users";
+	var $module_dir = 'Users';
+	var $object_name = "User";
+	var $user_preferences;
 
-    public $importable = true;
-    public $_userPreferenceFocus;
+	var $importable = true;
+	var $_userPreferenceFocus;
 
-    public $encodeFields = array ("first_name", "last_name", "description");
+	var $encodeFields = Array ("first_name", "last_name", "description");
 
 	// This is used to retrieve related fields from form posts.
-    public $additional_column_fields = array ('reports_to_name'
+	var $additional_column_fields = array ('reports_to_name'
 	);
 
-    public $emailAddress;
+	var $emailAddress;
 
 
-	public $new_schema = true;
+	var $new_schema = true;
 
 	function __construct() {
 		parent::__construct();
@@ -159,7 +154,6 @@ class User extends Person
 
 	/**
 	 * convenience function to get user's default signature
-     * return array
 	 */
 	function getDefaultSignature() {
 		if($defaultId = $this->getPreference('signature_default')) {
@@ -201,8 +195,7 @@ class User extends Person
 	public function getSignatures(
 	    $live = false,
 	    $defaultSig = '',
-	    $forSettings = false,
-        $elementId = 'signature_id'
+	    $forSettings = false
 	    )
 	{
 		$sig = $this->getSignaturesArray();
@@ -217,50 +210,13 @@ class User extends Person
 			$change = ($forSettings) ? "onChange='displaySignatureEdit();'" : "onChange='setSigEditButtonVisibility();'";
 		}
 
-		$id = (!$forSettings) ? $elementId : 'signature_idDisplay';
+		$id = (!$forSettings) ? 'signature_id' : 'signature_idDisplay';
 
 		$out  = "<select {$change} id='{$id}' name='{$id}'>";
 		$out .= get_select_options_with_id($sigs, $defaultSig).'</select>';
 
 		return $out;
 	}
-
-
-    /**
-     * retrieves any signatures that the User may have created as <select>
-     */
-    public function getEmailAccountSignatures(
-        $live = false,
-        $defaultSig = '',
-        $forSettings = false,
-        $elementId = 'account_signature_id'
-    )
-    {
-        $sig = $this->getSignaturesArray();
-        $sigs = array();
-        foreach ($sig as $key => $arr)
-        {
-            $sigs[$key] = !empty($arr['name']) ? $arr['name'] : '';
-        }
-
-        $change = '';
-        if(!$live) {
-            $change = ($forSettings) ? "onChange='displaySignatureEdit();'" : "onChange='setSigEditButtonVisibility();'";
-        }
-
-        $id = (!$forSettings) ? $elementId : 'signature_idDisplay';
-
-        $out  = "<select {$change} id='{$id}' name='{$id}'>";
-        if(empty($defaultSig)) {
-            $out .= get_select_empty_option($defaultSig, true, 'LBL_DEFAULT_EMAIL_SIGNATURES');
-        } else {
-            $out .= get_select_empty_option($defaultSig, false, 'LBL_DEFAULT_EMAIL_SIGNATURES');
-        }
-        $out .= get_select_full_options_with_id($sigs, $defaultSig);
-        $out .= '</select>';
-
-        return $out;
-    }
 
 	/**
 	 * returns buttons and JS for signatures
@@ -1251,149 +1207,194 @@ EOQ;
 	/**
 	 * returns opening <a href=xxxx for a contact, account, etc
 	 * cascades from User set preference to System-wide default
-     *
-     * @param string $emailAddress
-     * @param array $focus
-     * @param string $contact_id
-     * @param string $ret_module
-     * @param string $ret_action
-     * @param string $ret_id
-     * @param string $class
-     * @return string link
-     */
-    public function getEmailLink2(
-        $emailAddress,
-        &$focus,
-        $contact_id = '',
-        $ret_module = '',
-        $ret_action = 'DetailView',
-        $ret_id = '',
-        $class = ''
-    ) {
-        $emailLink = '';
-        global $sugar_config;
+	 * @return string	link
+	 * @param attribute the email addy
+	 * @param focus the parent bean
+	 * @param contact_id
+	 * @param return_module
+	 * @param return_action
+	 * @param return_id
+	 * @param class
+	 */
+	function getEmailLink2($emailAddress, &$focus, $contact_id='', $ret_module='', $ret_action='DetailView', $ret_id='', $class='') {
+		$emailLink = '';
+		global $sugar_config;
 
-        if (!isset($sugar_config['email_default_client'])) {
-            $this->setDefaultsInConfig();
-        }
+		if(!isset($sugar_config['email_default_client'])) {
+			$this->setDefaultsInConfig();
+		}
 
-        $userPref = $this->getPreference('email_link_type');
-        $defaultPref = $sugar_config['email_default_client'];
-        if ($userPref !== '') {
-            $client = $userPref;
-        } else {
-            $client = $defaultPref;
-        }
+		$userPref = $this->getPreference('email_link_type');
+		$defaultPref = $sugar_config['email_default_client'];
+		if($userPref != '') {
+			$client = $userPref;
+		} else {
+			$client = $defaultPref;
+		}
 
-        if ($client === 'sugar') {
-            require_once('modules/Emails/EmailUI.php');
-            $emailUI = new EmailUI();
-            for ($i = 0, $iMax = count($focus->emailAddress->addresses); $i < $iMax; $i++) {
-                $emailField = 'email' . (string)($i + 1);
-                if ($focus->emailAddress->addresses[$i]['email_address'] === $emailAddress) {
-                    $focus->$emailField = $emailAddress;
-                    $emailLink = $emailUI->populateComposeViewFields($focus, $emailField);
-                    break;
-                }
-            }
+		if($client == 'sugar') {
+			$email = '';
+			$to_addrs_ids = '';
+			$to_addrs_names = '';
+			$to_addrs_emails = '';
+
+			$fullName = !empty($focus->name) ? $focus->name : '';
+
+			if(empty($ret_module)) $ret_module = $focus->module_dir;
+			if(empty($ret_id)) $ret_id = $focus->id;
+			if($focus->object_name == 'Contact') {
+				$contact_id = $focus->id;
+				$to_addrs_ids = $focus->id;
+				// Bug #48555 Not User Name Format of User's locale.
+				$focus->_create_proper_name_field();
+			    $fullName = $focus->name;
+			    $to_addrs_names = $fullName;
+				$to_addrs_emails = $focus->email1;
+			}
+
+			$emailLinkUrl = 'contact_id='.$contact_id.
+				'&parent_type='.$focus->module_dir.
+				'&parent_id='.$focus->id.
+				'&parent_name='.urlencode($fullName).
+				'&to_addrs_ids='.$to_addrs_ids.
+				'&to_addrs_names='.urlencode($to_addrs_names).
+				'&to_addrs_emails='.urlencode($to_addrs_emails).
+				'&to_email_addrs='.urlencode($fullName . '&nbsp;&lt;' . $emailAddress . '&gt;').
+				'&return_module='.$ret_module.
+				'&return_action='.$ret_action.
+				'&return_id='.$ret_id;
+
+    		//Generate the compose package for the quick create options.
+    		//$json = getJSONobj();
+    		//$composeOptionsLink = $json->encode( array('composeOptionsLink' => $emailLinkUrl,'id' => $focus->id) );
+			require_once('modules/Emails/EmailUI.php');
+            $eUi = new EmailUI();
+            $j_quickComposeOptions = $eUi->generateComposePackageForQuickCreateFromComposeUrl($emailLinkUrl, true);
+
+    		$emailLink = "<a href='javascript:void(0);' onclick='SUGAR.quickCompose.init($j_quickComposeOptions);' class='$class'>";
+
+		} else {
+			// straight mailto:
+			$emailLink = '<a href="mailto:'.$emailAddress.'" class="'.$class.'">';
+		}
+
+		return $emailLink;
+	}
+
+	/**
+	 * returns opening <a href=xxxx for a contact, account, etc
+	 * cascades from User set preference to System-wide default
+	 * @return string	link
+	 * @param attribute the email addy
+	 * @param focus the parent bean
+	 * @param contact_id
+	 * @param return_module
+	 * @param return_action
+	 * @param return_id
+	 * @param class
+	 */
+	function getEmailLink($attribute, &$focus, $contact_id='', $ret_module='', $ret_action='DetailView', $ret_id='', $class='') {
+	    $emailLink = '';
+		global $sugar_config;
+
+		if(!isset($sugar_config['email_default_client'])) {
+			$this->setDefaultsInConfig();
+		}
+
+		$userPref = $this->getPreference('email_link_type');
+		$defaultPref = $sugar_config['email_default_client'];
+		if($userPref != '') {
+			$client = $userPref;
+		} else {
+			$client = $defaultPref;
+		}
+
+		if($client == 'sugar') {
+			$email = '';
+			$to_addrs_ids = '';
+			$to_addrs_names = '';
+			$to_addrs_emails = '';
+
+            $fullName = !empty($focus->name) ? $focus->name : '';
+
+			if(!empty($focus->$attribute)) {
+				$email = $focus->$attribute;
+			}
 
 
-        } else {
-            // straight mailto:
-            $emailLink = '<a href="mailto:' . $emailAddress . '" class="' . $class . '">';
-        }
+			if(empty($ret_module)) $ret_module = $focus->module_dir;
+			if(empty($ret_id)) $ret_id = $focus->id;
+			if($focus->object_name == 'Contact') {
+				// Bug #48555 Not User Name Format of User's locale.
+				$focus->_create_proper_name_field();
+			    $fullName = $focus->name;
+			    $contact_id = $focus->id;
+				$to_addrs_ids = $focus->id;
+				$to_addrs_names = $fullName;
+				$to_addrs_emails = $focus->email1;
+			}
 
-        return $emailLink;
-    }
+			$emailLinkUrl = 'contact_id='.$contact_id.
+				'&parent_type='.$focus->module_dir.
+				'&parent_id='.$focus->id.
+				'&parent_name='.urlencode($fullName).
+				'&to_addrs_ids='.$to_addrs_ids.
+				'&to_addrs_names='.urlencode($to_addrs_names).
+				'&to_addrs_emails='.urlencode($to_addrs_emails).
+				'&to_email_addrs='.urlencode($fullName . '&nbsp;&lt;' . $email . '&gt;').
+				'&return_module='.$ret_module.
+				'&return_action='.$ret_action.
+				'&return_id='.$ret_id;
 
-    /**
-     * returns opening <a href=xxxx for a contact, account, etc
-     * cascades from User set preference to System-wide default
-     *
-     * @param array $attribute
-     * @param array $focus
-     * @param string $contact_id
-     * @param string $ret_module
-     * @param string $ret_action
-     * @param string $ret_id
-     * @param string $class
-     * @return string link
-     */
-    public function getEmailLink(
-        $attribute,
-        &$focus,
-        $contact_id = '',
-        $ret_module = '',
-        $ret_action = 'DetailView',
-        $ret_id = '',
-        $class = ''
-    ) {
-        require_once('modules/Emails/EmailUI.php');
-        $emailLink = '';
-        global $sugar_config;
+			//Generate the compose package for the quick create options.
+    		require_once('modules/Emails/EmailUI.php');
+            $eUi = new EmailUI();
+            $j_quickComposeOptions = $eUi->generateComposePackageForQuickCreateFromComposeUrl($emailLinkUrl, true);
+    		$emailLink = "<a href='javascript:void(0);' onclick='SUGAR.quickCompose.init($j_quickComposeOptions);' class='$class'>";
 
+		} else {
+			// straight mailto:
+			$emailLink = '<a href="mailto:'.$focus->$attribute.'" class="'.$class.'">';
+		}
 
-        if (!isset($sugar_config['email_default_client'])) {
-            $this->setDefaultsInConfig();
-        }
-
-        $userPref = $this->getPreference('email_link_type');
-        $defaultPref = $sugar_config['email_default_client'];
-        if ($userPref !== '') {
-            $client = $userPref;
-        } else {
-            $client = $defaultPref;
-        }
-
-        if ($client === 'sugar') {
-            $emailUI = new EmailUI();
-            $emailLink = $emailUI->populateComposeViewFields($focus);
-
-        } else {
-            // straight mailto:
-            $emailLink = '<a href="mailto:' . $focus->$attribute . '" class="' . $class . '">';
-        }
-
-        return $emailLink;
-    }
+		return $emailLink;
+	}
 
 
 	/**
 	 * gets a human-readable explanation of the format macro
 	 * @return string Human readable name format
 	 */
-    public function getLocaleFormatDesc()
-    {
-        global $locale;
-        global $mod_strings;
-        global $app_strings;
+	function getLocaleFormatDesc() {
+		global $locale;
+		global $mod_strings;
+		global $app_strings;
 
-        $format['f'] = $mod_strings['LBL_LOCALE_DESC_FIRST'];
-        $format['l'] = $mod_strings['LBL_LOCALE_DESC_LAST'];
-        $format['s'] = $mod_strings['LBL_LOCALE_DESC_SALUTATION'];
-        $format['t'] = $mod_strings['LBL_LOCALE_DESC_TITLE'];
+		$format['f'] = $mod_strings['LBL_LOCALE_DESC_FIRST'];
+		$format['l'] = $mod_strings['LBL_LOCALE_DESC_LAST'];
+		$format['s'] = $mod_strings['LBL_LOCALE_DESC_SALUTATION'];
+		$format['t'] = $mod_strings['LBL_LOCALE_DESC_TITLE'];
 
-        $name['f'] = $app_strings['LBL_LOCALE_NAME_EXAMPLE_FIRST'];
-        $name['l'] = $app_strings['LBL_LOCALE_NAME_EXAMPLE_LAST'];
-        $name['s'] = $app_strings['LBL_LOCALE_NAME_EXAMPLE_SALUTATION'];
-        $name['t'] = $app_strings['LBL_LOCALE_NAME_EXAMPLE_TITLE'];
+		$name['f'] = $app_strings['LBL_LOCALE_NAME_EXAMPLE_FIRST'];
+		$name['l'] = $app_strings['LBL_LOCALE_NAME_EXAMPLE_LAST'];
+		$name['s'] = $app_strings['LBL_LOCALE_NAME_EXAMPLE_SALUTATION'];
+		$name['t'] = $app_strings['LBL_LOCALE_NAME_EXAMPLE_TITLE'];
 
-        $macro = $locale->getLocaleFormatMacro();
+		$macro = $locale->getLocaleFormatMacro();
 
-        $ret1 = '';
-        $ret2 = '';
-        for ($i = 0, $iMax = strlen($macro); $i < $iMax; $i++) {
-            if (array_key_exists($macro{$i}, $format)) {
-                $ret1 .= "<i>" . $format[$macro{$i}] . "</i>";
-                $ret2 .= "<i>" . $name[$macro{$i}] . "</i>";
-            } else {
-                $ret1 .= $macro{$i};
-                $ret2 .= $macro{$i};
-            }
-        }
-
-        return $ret1 . "<br />" . $ret2;
-    }
+		$ret1 = '';
+		$ret2 = '';
+		for($i=0; $i<strlen($macro); $i++) {
+			if(array_key_exists($macro{$i}, $format)) {
+				$ret1 .= "<i>".$format[$macro{$i}]."</i>";
+				$ret2 .= "<i>".$name[$macro{$i}]."</i>";
+			} else {
+				$ret1 .= $macro{$i};
+				$ret2 .= $macro{$i};
+			}
+		}
+		return $ret1."<br />".$ret2;
+	}
 
 
     /*
@@ -1674,12 +1675,12 @@ EOQ;
         $condition = 0;
         $charBKT .= $UPPERCASE . $LOWERCASE . $NUMBER;
         $password = "";
-        $length = '6';
+            $length = '6';
 
         // Create random characters for the ones that doesnt have requirements
-        for ($i = 0; $i < $length - $condition; $i++)  // loop and create password
+        for ($i=0; $i < $length - $condition; $i ++)  // loop and create password
         {
-            $password = $password . $charBKT[rand() % strlen($charBKT)];
+            $password = $password . substr ($charBKT, rand() % strlen($charBKT), 1);
         }
 
         return $password;
@@ -1853,13 +1854,4 @@ EOQ;
             return false;
         }
     }
-
-	public function getEditorType() {
-		$editorType = $this->getPreference('editor_type');
-		if(!$editorType) {
-			$editorType = 'mozaik';
-			$this->setPreference('editor_type', $editorType);
-		}
-		return $editorType;
-	}
 }
