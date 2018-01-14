@@ -42,19 +42,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/*********************************************************************************
-
- * Description:  returns HTML for client-side image map.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
-
-
 require_once('include/charts/Charts.php');
-
-
 
 class Chart_pipeline_by_lead_source
 {
@@ -228,7 +216,13 @@ global $timedate;
 	* All Rights Reserved..
 	* Contributor(s): ______________________________________..
 	*/
-	function gen_xml($legends=array('foo','bar'), $user_id=array('1'), $cache_file_name='a_file', $refresh=true,$current_module_strings) {
+    public function gen_xml(
+        $legends = array('foo', 'bar'),
+        $user_id = array('1'),
+        $cache_file_name = 'a_file',
+        $refresh = true,
+        $current_module_strings = null
+    ) {
 		global $app_strings, $charset, $lang, $pieChartColors, $current_user;
 
 		$kDelim = $current_user->getPreference('num_grp_sep');
@@ -449,4 +443,3 @@ global $timedate;
 		return array( 'lead_source', );
 	}
 }
-?>

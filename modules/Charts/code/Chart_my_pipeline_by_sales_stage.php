@@ -42,16 +42,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/*********************************************************************************
-
- * Description:  returns HTML for client-side image map.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
-
-
 require_once("include/charts/Charts.php");
 require_once("modules/Charts/code/Chart_pipeline_by_sales_stage.php");
 
@@ -236,14 +226,30 @@ echo "<P align='center'><span class='chartFootnote'>".$current_module_strings['L
 <?php
 echo get_validate_chart_js();
 
-	/**
-	* Creates opportunity pipeline image as a HORIZONTAL accumlated BAR GRAPH for multiple users.
-	* param $datax- the sales stage data to display in the x-axis
-	* Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	* All Rights Reserved..
-	* Contributor(s): ______________________________________..
-	*/
-	function gen_xml_pipeline_by_sales_stage($datax=array('foo','bar'), $date_start='2071-10-15', $date_end='2071-10-15', $user_id=array('1'), $cache_file_name='a_file', $refresh=false,$chart_size='hBarF',$current_module_strings) {
+/**
+ * Creates opportunity pipeline image as a HORIZONTAL accumlated BAR GRAPH for multiple users.
+ * param $datax- the sales stage data to display in the x-axi
+ *
+ * @param array $datax
+ * @param string $date_start
+ * @param string $date_end
+ * @param array $user_id
+ * @param string $cache_file_name
+ * @param bool $refresh
+ * @param string $chart_size
+ * @param null $current_module_strings
+ * @return mixed
+ */
+function gen_xml_pipeline_by_sales_stage(
+    $datax = array('foo', 'bar'),
+    $date_start = '2071-10-15',
+    $date_end = '2071-10-15',
+    $user_id = array('1'),
+    $cache_file_name = 'a_file',
+    $refresh = false,
+    $chart_size = 'hBarF',
+    $current_module_strings = null
+) {
 		global $app_strings, $charset, $lang, $barChartColors, $current_user;
 
 		$kDelim = $current_user->getPreference('num_grp_sep');
@@ -497,5 +503,3 @@ echo get_validate_chart_js();
 	function constructGroupBy(){
 		return array('sales_stage');
 	}
-
-?>

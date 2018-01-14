@@ -3430,7 +3430,8 @@ class InboundEmail extends SugarBean {
 	 * @param array $breadcrumb Default 0, build up of the parts mapping
 	 * @param bool $forDisplay Default false
 	 */
-	function saveAttachments($msgNo, $parts, $emailId, $breadcrumb='0', $forDisplay) {
+    public function saveAttachments($msgNo, $parts, $emailId, $breadcrumb = '0', $forDisplay = null)
+    {
 		global $sugar_config;
 		/*
 			Primary body types for a part of a mail structure (imap_fetchstructure returned object)
@@ -5902,12 +5903,16 @@ eoq;
 		}
 	}
 
-	/**
-	 * Returns a list of emails in a mailbox.
-	 * @param string mbox Name of mailbox using dot notation paths to display
-	 * @param string $forceRefresh Flag to use cache or not
-	 */
-	function displayFolderContents($mbox, $forceRefresh='false', $page) {
+    /**
+     * Returns a list of emails in a mailbox.
+     *
+     * @param string $mbox Name of mailbox using dot notation paths to display
+     * @param string $forceRefresh Flag to use cache or not
+     * @param null $page
+     * @return array
+     */
+    public function displayFolderContents($mbox, $forceRefresh = 'false', $page = null)
+    {
 		global $current_user;
 
 		$delimiter = $this->get_stored_options('folderDelimiter');

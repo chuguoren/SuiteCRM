@@ -44,8 +44,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/charts/Charts.php');
 
-
-
 class Chart_lead_source_by_outcome
 {
 	var $modules = array('Opportunities');
@@ -225,7 +223,13 @@ global  $timedate;
 	* All Rights Reserved..
 	* Contributor(s): ______________________________________..
 	*/
-	function  gen_xml($datay=array('foo','bar'), $user_id=array('1'), $cache_file_name='a_file', $refresh=false,$current_module_strings) {
+    public function gen_xml(
+        $datay = array('foo', 'bar'),
+        $user_id = array('1'),
+        $cache_file_name = 'a_file',
+        $refresh = false,
+        $current_module_strings = null
+    ) {
 		global $app_strings, $charset, $lang, $barChartColors,$app_list_strings, $current_user;
 
 		$kDelim = $current_user->getPreference('num_grp_sep');
@@ -457,5 +461,3 @@ global  $timedate;
 		return array( 'lead_source', 'sales_stage' );
 	}
 }
-
-?>

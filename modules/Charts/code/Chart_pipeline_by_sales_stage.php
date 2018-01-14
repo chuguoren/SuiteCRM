@@ -42,20 +42,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-/*********************************************************************************
-
- * Description:  returns HTML for client-side image map.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
-
-
-
 require_once('include/charts/Charts.php');
-
-
 
 class Chart_pipeline_by_sales_stage
 {
@@ -313,7 +300,16 @@ echo get_validate_chart_js();
 	* All Rights Reserved..
 	* Contributor(s): ______________________________________..
 	*/
-	function gen_xml($datax=array('foo','bar'), $date_start='2071-10-15', $date_end='2071-10-15', $user_id=array('1'), $cache_file_name='a_file', $refresh=false,$chart_size='hBarF',$current_module_strings) {
+    public function gen_xml(
+        $datax = array('foo', 'bar'),
+        $date_start = '2071-10-15',
+        $date_end = '2071-10-15',
+        $user_id = array('1'),
+        $cache_file_name = 'a_file',
+        $refresh = false,
+        $chart_size = 'hBarF',
+        $current_module_strings = null
+    ) {
 		global $app_strings, $charset, $lang, $barChartColors, $current_user;
 
 		$kDelim = $current_user->getPreference('num_grp_sep');
@@ -634,5 +630,3 @@ $GLOBALS['log']->debug($datax);
 	}
 
 }
-
-?>
