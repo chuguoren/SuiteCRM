@@ -266,20 +266,20 @@ class EmailTest extends PHPUnit_Framework_TestCase
         $email = new Email();
 
         $email->id = $id;
-        $email->from_addr_name = 'from_test@email.com';
-        $email->to_addrs_names = 'to_test@email.com';
-        $email->cc_addrs_names = 'cc_test@email.com';
-        $email->bcc_addrs_names = 'bcc_test@email.com';
+        $email->from_addr = 'from_test@email.com';
+        $email->to_addrs = 'to_test@email.com';
+        $email->cc_addrs = 'cc_test@email.com';
+        $email->bcc_addrs = 'bcc_test@email.com';
 
         $email->saveEmailAddresses();
 
         //retrieve and verify that email addresses were saved properly 
         $email->retrieveEmailAddresses();
 
-        $this->assertNotSame(false, strpos($email->from_addr_name, 'from_test@email.com'));
-        $this->assertNotSame(false, strpos($email->to_addrs_names, 'to_test@email.com'));
-        $this->assertNotSame(false, strpos($email->cc_addrs_names, 'cc_test@email.com'));
-        $this->assertNotSame(false, strpos($email->bcc_addrs_names, 'bcc_test@email.com'));
+        $this->assertNotSame(false, strpos($email->from_addr, 'from_test@email.com'));
+        $this->assertNotSame(false, strpos($email->to_addrs, 'to_test@email.com'));
+        $this->assertNotSame(false, strpos($email->cc_addrs, 'cc_test@email.com'));
+        $this->assertNotSame(false, strpos($email->bcc_addrs, 'bcc_test@email.com'));
     }
 
     public function retrieveEmailAddresses($id)
