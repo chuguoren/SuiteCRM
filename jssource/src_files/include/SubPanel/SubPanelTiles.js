@@ -146,7 +146,7 @@ function set_return_and_save_background(popup_reply_data) {
   var name_to_value_array = popup_reply_data.name_to_value_array;
   var passthru_data = popup_reply_data.passthru_data;
   var select_entire_list = typeof( popup_reply_data.select_entire_list ) == 'undefined' ? 0 : popup_reply_data.select_entire_list;
-  var current_query_by_page = popup_reply_data.current_query_by_page;
+  var current_query_by_page = popup_reply_data.current_query_by_page.replace(/&quot;/g,'');
   // construct the POST request
   var query_array = new Array();
   if (name_to_value_array != 'undefined') {
@@ -283,13 +283,32 @@ function showSubPanel(child_field, url, force_load, layout_def_key) {
     }
 
     current_subpanel_url = url;
-    // http_fetch_async(url,got_data,request_id++);
-    var returnstuff = http_fetch_sync(url + '&inline=' + inline + '&ajaxSubpanel=true');
-    request_id++;
-    got_data(returnstuff, inline);
-    $('#whole_subpanel_' + child_field + ' .table-responsive').footable();
-  }
-  else {
+
+    var loadingImg = '<img src="themes/' + SUGAR.themes.theme_name + '/images/loading.gif">';
+    $("#list_subpanel_" + child_field.toLowerCase()).html(loadingImg);
+
+    $.ajax({
+      type: "GET",
+      async: true,
+      cache: false,
+      url: url + '&inline=' + inline + '&ajaxSubpanel=true',
+      success: function(data) {
+        request_map[request_id] = child_field;
+        var returnstuff = {
+          "responseText": data,
+          "responseXML": '',
+          "request_id": request_id
+        };
+        got_data(returnstuff, inline);
+        if ($('#whole_subpanel_' + child_field).hasClass('useFooTable')) {
+          $('#whole_subpanel_' + child_field + ' .table-responsive').footable();
+        }
+        request_id++;
+      }
+    });
+
+  } else {
+
     var subpanel = document.getElementById('subpanel_' + child_field);
     subpanel.style.display = '';
 

@@ -296,7 +296,7 @@ class CaseUpdatesHook
             return;
         }
         $case = BeanFactory::getBean('Cases', $caseId);
-        if (!empty($case->id)) {
+        if (empty($case->id)) {
             return;
         }
         if (array_key_exists($case->status, $statusMap)) {
@@ -434,15 +434,14 @@ class CaseUpdatesHook
         if ($arguments['module'] !== 'Cases' || $arguments['related_module'] !== 'Contacts') {
             return;
         }
-        if (!$bean->fetched_row) {
-            return;
-        }
         if (!empty($arguments['related_bean'])) {
             $contact = $arguments['related_bean'];
         } else {
             $contact = BeanFactory::getBean('Contacts', $arguments['related_id']);
         }
-        $this->sendCreationEmail($bean, $contact);
+        if(isset($contact->id) && !empty($contact->id)){
+            $this->sendCreationEmail($bean, $contact);
+        }
     }
 
     /**

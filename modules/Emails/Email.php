@@ -548,24 +548,55 @@ class Email extends SugarBean {
                     }
                 }
             }
+          
+	        /* template parsing */
+	        if (empty($object_arr)) {
+	          $object_arr= array('Contacts' => '123');
+	        }
+	        $object_arr['Users'] = $current_user->id;
+	        $this->description_html = EmailTemplate::parse_template($this->description_html, $object_arr);
+	        $this->name = EmailTemplate::parse_template($this->name, $object_arr);
+	        $this->description = EmailTemplate::parse_template($this->description, $object_arr);
+	        $this->description = html_entity_decode($this->description,ENT_COMPAT,'UTF-8');
+			if($this->type != 'draft' && $this->status != 'draft') {
+	        	$this->id = create_guid();
+	        	$this->date_entered = "";
+	        	$this->new_with_id = true;
+		        $this->type = 'out';
+		        $this->status = 'sent';
+			}
 
-            /* template parsing */
-            if (empty($object_arr)) {
-                $object_arr = array('Contacts' => '123');
+        // This code is 7.8.x LTS specific, from 7.9 onwards it is found in EmailsController and can be deleted here
+        if (!empty($request['data_parent_id1'])) {
+            $macro_nv = array();
+            $focusName = $request['parent_type'];
+            $focus = BeanFactory::getBean($focusName, $request['parent_id']);
+            if ($this->module_dir == 'Accounts') {
+                $focusName = 'Accounts';
             }
-            $object_arr['Users'] = $current_user->id;
-            $this->description_html = EmailTemplate::parse_template($this->description_html, $object_arr);
-            $this->name = EmailTemplate::parse_template($this->name, $object_arr);
-            $this->description = EmailTemplate::parse_template($this->description, $object_arr);
-            $this->description = html_entity_decode($this->description, ENT_COMPAT, 'UTF-8');
-            if ($this->type !== 'draft' && $this->status !== 'draft') {
-                $this->id = create_guid();
-                $this->date_entered = '';
-                $this->new_with_id = true;
-                $this->type = 'out';
-                $this->status = 'sent';
-            }
-        }
+
+            $emailTemplate = BeanFactory::getBean(
+                'EmailTemplates',
+                isset($request['emails_email_templates_idb']) ?
+                    $request['emails_email_templates_idb'] :
+                    null
+            );
+            $templateData = $emailTemplate->parse_email_template(
+                array(
+                    'subject' => $this->name,
+                    'body_html' => $this->description_html,
+                    'body' => $this->description,
+                ),
+                $focusName,
+                $focus,
+                $macro_nv
+            );
+
+            $this->description_html = $templateData['body_html'];
+            $this->description = $templateData['body'];
+
+        } // End of 7.8.x code
+    }
 
         if (isset($request['parent_type']) && empty($request['parent_type']) &&
             isset($request['parent_id']) && empty($request['parent_id'])
@@ -2453,7 +2484,7 @@ class Email extends SugarBean {
 			$this->status_name = $app_list_strings['dom_email_status'][$this->status];
 		}
 
-		if ( empty($this->name ) &&  empty($_REQUEST['record'])) {
+		if ( empty($this->name ) &&  empty($_REQUEST['record']) && !empty($mod_strings['LBL_NO_SUBJECT'])) {
 			$this->name = $mod_strings['LBL_NO_SUBJECT'];
 		}
 
