@@ -106,6 +106,7 @@
             </div>
             <button id="addChartButton" type="button" class="button">{$MOD.LBL_ADD_CHART}</button>
         </div>
+        <button id="addChartButton" type="button" class="button">{$MOD.LBL_ADD_CHART}</button>
     </div>
 </div>
 
