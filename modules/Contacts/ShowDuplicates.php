@@ -178,5 +178,3 @@ if(!empty($_POST['return_id'])) $xtpl->assign('RETURN_ID', $_POST['return_id']);
 $xtpl->assign('INPUT_FIELDS',$input);
 $xtpl->parse('main');
 $xtpl->out('main');
-
-?>

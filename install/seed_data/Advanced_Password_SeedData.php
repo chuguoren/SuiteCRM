@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2017 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2018 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -75,6 +75,21 @@ $EmailTemp->text_only = 0;
 $id =$EmailTemp->save();
 $sugar_config['passwordsetting']['lostpasswordtmpl'] = $id;
 
+
+//Two Factor Authentication code template
+$EmailTemp = new EmailTemplate();
+$EmailTemp->name = $mod_strings['two_factor_auth_email']['name'];
+$EmailTemp->description = $mod_strings['two_factor_auth_email']['description'];
+$EmailTemp->subject = $mod_strings['two_factor_auth_email']['subject'];
+$EmailTemp->type = $mod_strings['two_factor_auth_email']['type'];
+$EmailTemp->body = $mod_strings['two_factor_auth_email']['txt_body'];
+$EmailTemp->body_html = $mod_strings['two_factor_auth_email']['body'];
+$EmailTemp->deleted = 0;
+$EmailTemp->published = 'off';
+$EmailTemp->text_only = 0;
+$id =$EmailTemp->save();
+$sugar_config['passwordsetting']['factoremailtmpl'] = $id;
+
 // set all other default settings
 $sugar_config['passwordsetting']['forgotpasswordON'] = true;
 $sugar_config['passwordsetting']['SystemGeneratedPasswordON'] = true;
@@ -87,5 +102,6 @@ $sugar_config['passwordsetting']['minpwdlength'] = 6;
 $sugar_config['passwordsetting']['oneupper'] = false;
 $sugar_config['passwordsetting']['onelower'] = false;
 $sugar_config['passwordsetting']['onenumber'] = false;
+$sugar_config['passwordsetting']['onespecial'] = false;
 
 write_array_to_file( "sugar_config", $sugar_config, "config.php");
